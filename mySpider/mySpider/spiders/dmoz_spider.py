@@ -12,8 +12,7 @@ class DmozSpider(scrapy.Spider):
     name = "dmoz"
     allowd_domains = ["jfz.com"]
     start_urls = [
-        "http://www.jfz.com/simu/",
-        "http://www.jfz.com/xintuo/"
+        "http://www.jfz.com/",
     ]
 
 #    def parse(self,response):
@@ -37,8 +36,18 @@ class DmozSpider(scrapy.Spider):
 #        self.log('A response from %s just arrived!' % response.url)
     def parse(self, response):
         sel = scrapy.Selector(response)
-        for h3 in response.xpath('//h3').extract():
+        for h3 in response.xpath('//title/text()').extract():
             yield DmozItem(title=h3)
 
         for url in response.xpath('//a/@href').extract():
-            yield DmozItem(link=url)
+            if(not url):
+                continue
+            if(url.find('javascript') != -1):
+                continue
+            if(url.find('http') == -1):
+                request = response.url + url
+            else:   
+                continue
+            yield DmozItem(link=request)
+
+#            yield scrapy.Request(request, callback=self.parse)
