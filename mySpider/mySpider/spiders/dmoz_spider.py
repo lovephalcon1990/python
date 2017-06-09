@@ -7,14 +7,31 @@
 
 import scrapy
 from mySpider.items import DmozItem
+#from scrapy.spiders import CrawlSpider,Rule
+#from scrapy.linkextractors import LinkExtractor
 
 class DmozSpider(scrapy.Spider):
     name = "dmoz"
-    allowd_domains = ["jfz.com"]
+    allowd_domains = ["mogujie.com"]
     start_urls = [
-        "http://www.jfz.com/",
+        "http://list.mogujie.com/book/clothing/50003",
     ]
+    def parse(self,response):
+        self.log('A response from %s just arrived!' % response.url)
+        sel = scrapy.Selector(response)
+        for h3 in response.xpath('//h3').extract():
+            yield DmozItem(title=h3)
 
+        for sel in response.xpath('//div[@class="goods_item"]'):
+            self.log(sel)
+#    rules = (
+#        Rule(LinkExtractor(allow=('',),deny=('',))),
+#        Rule(LinkExtractor(allow=('',)),callback='parse_item'),
+#    )
+#    def parse_item(self,response):
+#        self.log('Hi, this is an item page! %s' % response.url)
+        
+    
 #    def parse(self,response):
 #       filename = response.url.split("/")[-2]
 #       for sel in response.xpath('//ul/li'):
@@ -34,20 +51,20 @@ class DmozSpider(scrapy.Spider):
 
 #    def parse(self, response):
 #        self.log('A response from %s just arrived!' % response.url)
-    def parse(self, response):
-        sel = scrapy.Selector(response)
-        for h3 in response.xpath('//title/text()').extract():
-            yield DmozItem(title=h3)
-
-        for url in response.xpath('//a/@href').extract():
-            if(not url):
-                continue
-            if(url.find('javascript') != -1):
-                continue
-            if(url.find('http') == -1):
-                request = response.url + url
-            else:   
-                continue
-            yield DmozItem(link=request)
+#    def parse(self, response):
+#        sel = scrapy.Selector(response)
+#        for h3 in response.xpath('//title/text()').extract():
+#            yield DmozItem(title=h3)
+#
+#        for url in response.xpath('//a/@href').extract():
+#            if(not url):
+#                continue
+#            if(url.find('javascript') != -1):
+#                continue
+#            if(url.find('http') == -1):
+#                request = response.url + url
+#            else:   
+#                continue
+#            yield DmozItem(link=request)
 
 #            yield scrapy.Request(request, callback=self.parse)
