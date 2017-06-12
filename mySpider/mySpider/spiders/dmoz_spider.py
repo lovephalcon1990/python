@@ -6,24 +6,36 @@
 # http://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+import json
 from mySpider.items import DmozItem
+from scrapy.spider import BaseSpider
+from scrapy.selector import HtmlXPathSelector
 #from scrapy.spiders import CrawlSpider,Rule
 #from scrapy.linkextractors import LinkExtractor
 
-class DmozSpider(scrapy.Spider):
+class DmozSpider(BaseSpider):
     name = "dmoz"
     allowd_domains = ["mogujie.com"]
     start_urls = [
-        "http://list.mogujie.com/book/clothing/50003",
+        "http://list.mogujie.com/search?sort=pop&userId=&showH=330&cKey=15&fcid=50003&width=220&action=clothing&page=1",
     ]
     def parse(self,response):
-        self.log('A response from %s just arrived!' % response.url)
-        sel = scrapy.Selector(response)
-        for h3 in response.xpath('//h3').extract():
-            yield DmozItem(title=h3)
-
-        for sel in response.xpath('//div[@class="goods_item"]'):
-            self.log(sel)
+        self.log('A response from %s just arrived!' % response)
+        sites = json.loads(response.body_as_unicode()) 
+        rows = sites['result']['wall']['docs']
+        for  row in rows:
+            item = DmozItem()
+            item['title'] = row['title']
+            item['price'] = row['price']
+            item['link'] = row['link']
+            yield item
+        return item
+#            yield item 
+#        for h3 in response.xpath('//div[@class="goods_item"]').extract():
+#            yield DmozItem(title=h3)
+#
+#        for sel in response.xpath('//div[@class="goods_item"]'):
+#            self.log(sel)
 #    rules = (
 #        Rule(LinkExtractor(allow=('',),deny=('',))),
 #        Rule(LinkExtractor(allow=('',)),callback='parse_item'),
