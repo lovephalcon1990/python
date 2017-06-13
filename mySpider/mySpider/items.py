@@ -18,5 +18,7 @@ class DmozItem(scrapy.Item):
     link = scrapy.Field()
     desc = scrapy.Field()
     price = scrapy.Field()
+    image_urls = scrapy.Field()
+    images  = scrapy.Field()
     price_excludes_vat = 1
     last_updated = scrapy.Field(serializer=str)

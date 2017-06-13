@@ -64,12 +64,13 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-    'mySpider.pipelines.MyspiderPipeline': 300,
-}
+#ITEM_PIPELINES = {
+#    'scrapy.pipeline.images.ImagesPipeline': 1,
+#    'mySpider.pipelines.MyspiderPipeline': 300,
+#}
 #TEM_PIPELINES = ['mySpider.pipelines.mySpiderPipeline'] # add settings
-#ITEM_PIPELINES = {'mySpider.pipelines.mySpiderPipeline':1, 'mySpider.pipelines.MyImagesPipeline':2} # add settings
-#IMAGES_STORE = './images'
+ITEM_PIPELINES = {'mySpider.pipelines.MyspiderPipeline':1, 'scrapy.pipelines.images.ImagesPipeline':2} # add settings
+IMAGES_STORE = './images'
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True

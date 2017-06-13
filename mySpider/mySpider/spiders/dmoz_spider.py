@@ -28,8 +28,8 @@ class DmozSpider(BaseSpider):
             item['title'] = row['title']
             item['price'] = row['price']
             item['link'] = row['link']
+            item['image_urls'] = [row['img']]
             yield item
-        return item
 #            yield item 
 #        for h3 in response.xpath('//div[@class="goods_item"]').extract():
 #            yield DmozItem(title=h3)
