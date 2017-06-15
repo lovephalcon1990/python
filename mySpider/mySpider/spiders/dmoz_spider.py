@@ -25,9 +25,12 @@ class DmozSpider(BaseSpider):
         rows = sites['result']['wall']['docs']
         for  row in rows:
             item = DmozItem()
+            item['_id']   = row['tradeItemId']
             item['title'] = row['title']
+            item['orgPrice']=row['orgPrice']
             item['price'] = row['price']
             item['link'] = row['link']
+            item['sale'] = row['sale']
             item['image_urls'] = [row['img']]
             yield item
 #            yield item 

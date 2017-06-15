@@ -14,11 +14,12 @@ import scrapy
 #    pass
 
 class DmozItem(scrapy.Item):
+    _id = scrapy.Field()
     title = scrapy.Field()
     link = scrapy.Field()
     desc = scrapy.Field()
+    orgPrice = scrapy.Field()
     price = scrapy.Field()
     image_urls = scrapy.Field()
     images  = scrapy.Field()
-    price_excludes_vat = 1
-    last_updated = scrapy.Field(serializer=str)
+    sale = scrapy.Field()
