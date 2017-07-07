@@ -1,6 +1,6 @@
 #   pathon 爬虫
 
-##  安装python环境（3版本以下操作）
+##  安装python环境（version 3以下操作）
 
 ### 安装pyenv (Python 多版本管理器)
 自动安装工具
